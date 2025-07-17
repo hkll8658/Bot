@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGMI VIP Loader | Purchase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ff8a00, #da1b60);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .panel-info {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid #ff4757;
+        }
+        
+        .panel-info a {
+            color: #70a1ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .panel-info a:hover {
+            text-decoration: underline;
+        }
+        
+        .form-container {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            border: 1px solid #3742fa;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .custom-select {
+            position: relative;
+            width: 100%;
+        }
+        
+        .select-selected {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #5352ed;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .select-selected:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #70a1ff;
+        }
+        
+        .select-selected::after {
+            content: "▼";
+            font-size: 0.8rem;
+            transition: transform 0.3s;
+        }
+        
+        .select-selected.select-arrow-active::after {
+            transform: rotate(180deg);
+        }
+        
+        .select-items {
+            position: absolute;
+            background: #2f3542;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .select-items div {
+            padding: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .select-items div:last-child {
+            border-bottom: none;
+        }
+        
+        .select-items div:hover {
+            background: #5352ed;
+        }
+        
+        .select-hide {
+            display: none;
+        }
+        
+        .buttons-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #ff6b6b, #ff4757);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #ff4757, #ff6b6b);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(to right, #3742fa, #5352ed);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(to right, #5352ed, #3742fa);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(83, 82, 237, 0.4);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(to right, #ffa502, #ff7f50);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: linear-gradient(to right, #ff7f50, #ffa502);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 127, 80, 0.4);
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            display: none;
+        }
+        
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .payment-content {
+            background: rgba(30, 30, 46, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            max-width: 90%;
+            width: 500px;
+            border: 2px solid #ff4757;
+            box-shadow: 0 0 30px rgba(255, 71, 87, 0.5);
+            position: relative;
+        }
+        
+        .payment-content h2 {
+            margin-bottom: 20px;
+            color: #ff6b6b;
+        }
+        
+        .qr-container {
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .qr-container img {
+            max-width: 200px;
+            display: block;
+        }
+        
+        .timer {
+            font-size: 1.5rem;
+            margin: 15px 0;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        .upi-details {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 1.1rem;
+        }
+        
+        .upi-id {
+            font-weight: bold;
+            color: #70a1ff;
+            font-size: 1.2rem;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff4757;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .key-display {
+            display: none;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            border: 1px solid #2ed573;
+        }
+        
+        .key-display h3 {
+            margin-bottom: 15px;
+            color: #2ed573;
+        }
+        
+        .key-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #2ed573;
+            word-break: break-all;
+        }
+        
+        .copy-btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #3742fa;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: #5352ed;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 600px) {
+            .buttons-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-crown"></i> BGMI VIP LOADER</h1>
+            <p>Get premium features and dominate the battlefield with our exclusive cheats</p>
+        </header>
+        
+        <div class="panel-info">
+            <p>Control Panel: <a href="https://aalyan.za.com/login" target="_blank">https://aalyan.za.com/login</a></p>
+            <p>Username: hkll8658 | Password: hkll8658</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-group">
+                <label for="loader-select">Select a Loader:</label>
+                <div class="custom-select">
+                    <div class="select-selected" id="loader-select">Choose a loader...</div>
+                    <div class="select-items" id="loader-options">
+                        <div value="vip">BGMI VIP LODER</div>
+                        <div value="best">BEST CHEAT LODER</div>
+                    </div>
+                </div>
+                <div class="error-message" id="loader-error">Please select a loader</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="slot-select">Select a Slot:</label>
+                <div class="custom-select">
+                    <div class="select-selected" id="slot-select">Choose a slot...</div>
+                    <div class="select-items" id="slot-options">
+                        <div value="3hr">🎯 3hr    ☞ 35₹</div>
+                        <div value="5hr">🎯 5hr    ☞ 49₹</div>
+                        <div value="1day">🎯 1day ☞ 99₹</div>
+                        <div value="3day">🎯 3day ☞ 199₹</div>
+                        <div value="7day">🎯 7day ☞ 449₹</div>
+                        <div value="15day">🎯 15day ☞ 799₹</div>
+                        <div value="30day">🎯 30day ☞ 1499₹</div>
+                        <div value="60day">🎯 60day ☞ 1999₹</div>
+                    </div>
+                </div>
+                <div class="error-message" id="slot-error">Please select a slot</div>
+            </div>
+            
+            <div class="buttons-container">
+                <button class="btn btn-primary" id="buy-btn">
+                    <i class="fas fa-shopping-cart"></i> Buy
+                </button>
+                <button class="btn btn-secondary" id="contact-btn">
+                    <i class="fas fa-headset"></i> Contact Admin
+                </button>
+                <button class="btn btn-warning" id="reset-btn">
+                    <i class="fas fa-redo"></i> Reset My Key
+                </button>
+            </div>
+        </div>
+        
+        <div class="key-display" id="key-display">
+            <h3><i class="fas fa-key"></i> Your Activation Key</h3>
+            <div class="key-value" id="key-value">XXXX-XXXX-XXXX-XXXX</div>
+            <button class="copy-btn" id="copy-btn"><i class="fas fa-copy"></i> Copy Key</button>
+        </div>
+    </div>
+    
+    <div class="payment-modal" id="payment-modal">
+        <div class="payment-content">
+            <div class="close-btn" id="close-payment">
+                <i class="fas fa-times"></i>
+            </div>
+            <h2><i class="fas fa-qrcode"></i> Complete Your Payment</h2>
+            <p>Scan the QR code below or use UPI ID to complete your purchase</p>
+            
+            <div class="qr-container">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=himanshukok16@oksbi&pn=BGMI%20Loader%20Purchase&am=AMOUNT&cu=INR" alt="Payment QR Code" id="qr-img">
+            </div>
+            
+            <div class="upi-details">
+                <p>UPI ID: <span class="upi-id">himanshukok16@oksbi</span></p>
+                <p>Amount: <span id="payment-amount">₹0</span></p>
+            </div>
+            
+            <div class="timer" id="payment-timer">03:00</div>
+            <p>Your key will be generated automatically after successful payment</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2023 BGMI VIP Loader. All rights reserved. For educational purposes only.</p>
+        <p>This is a simulated purchase interface for demonstration.</p>
+    </footer>
+
+    <script>
+        // Select elements
+        const loaderSelect = document.getElementById('loader-select');
+        const slotSelect = document.getElementById('slot-select');
+        const loaderOptions = document.getElementById('loader-options');
+        const slotOptions = document.getElementById('slot-options');
+        const loaderError = document.getElementById('loader-error');
+        const slotError = document.getElementById('slot-error');
+        const buyBtn = document.getElementById('buy-btn');
+        const contactBtn = document.getElementById('contact-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const paymentModal = document.getElementById('payment-modal');
+        const closePayment = document.getElementById('close-payment');
+        const paymentTimer = document.getElementById('payment-timer');
+        const paymentAmount = document.getElementById('payment-amount');
+        const qrImg = document.getElementById('qr-img');
+        const keyDisplay = document.getElementById('key-display');
+        const keyValue = document.getElementById('key-value');
+        const copyBtn = document.getElementById('copy-btn');
+        
+        // Prices mapping
+        const prices = {
+            '3hr': 35,
+            '5hr': 49,
+            '1day': 99,
+            '3day': 199,
+            '7day': 449,
+            '15day': 799,
+            '30day': 1499,
+            '60day': 1999
+        };
+        
+        // Initialize selected values
+        let selectedLoader = null;
+        let selectedSlot = null;
+        
+        // Custom dropdown functionality
+        loaderSelect.addEventListener('click', function() {
+            this.classList.toggle('select-arrow-active');
+            loaderOptions.style.display = loaderOptions.style.display === 'block' ? 'none' : 'block';
+            slotOptions.style.display = 'none';
+            slotSelect.classList.remove('select-arrow-active');
+        });
+        
+        slotSelect.addEventListener('click', function() {
+            this.classList.toggle('select-arrow-active');
+            slotOptions.style.display = slotOptions.style.display === 'block' ? 'none' : 'block';
+            loaderOptions.style.display = 'none';
+            loaderSelect.classList.remove('select-arrow-active');
+        });
+        
+        // Handle loader selection
+        loaderOptions.querySelectorAll('div').forEach(option => {
+            option.addEventListener('click', function() {
+                selectedLoader = this.getAttribute('value');
+                loaderSelect.textContent = this.textContent;
+                loaderOptions.style.display = 'none';
+                loaderSelect.classList.remove('select-arrow-active');
+                loaderError.style.display = 'none';
+            });
+        });
+        
+        // Handle slot selection
+        slotOptions.querySelectorAll('div').forEach(option => {
+            option.addEventListener('click', function() {
+                selectedSlot = this.getAttribute('value');
+                slotSelect.textContent = this.textContent;
+                slotOptions.style.display = 'none';
+                slotSelect.classList.remove('select-arrow-active');
+                slotError.style.display = 'none';
+            });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!loaderSelect.contains(e.target)) {
+                loaderOptions.style.display = 'none';
+                loaderSelect.classList.remove('select-arrow-active');
+            }
+            if (!slotSelect.contains(e.target)) {
+                slotOptions.style.display = 'none';
+                slotSelect.classList.remove('select-arrow-active');
+            }
+        });
+        
+        // Buy button functionality
+        buyBtn.addEventListener('click', function() {
+            let valid = true;
+            
+            if (!selectedLoader) {
+                loaderError.style.display = 'block';
+                valid = false;
+            }
+            
+            if (!selectedSlot) {
+                slotError.style.display = 'block';
+                valid = false;
+            }
+            
+            if (valid) {
+                // Set amount in payment modal
+                const amount = prices[selectedSlot];
+                paymentAmount.textContent = `₹${amount}`;
+                
+                // Update QR code with amount
+                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=himanshukok16@oksbi&pn=BGMI%20Loader%20Purchase&am=${amount}&cu=INR`;
+                
+                // Show payment modal
+                paymentModal.style.display = 'flex';
+                
+                // Start timer (3 minutes)
+                let timeLeft = 180;
+                const timerInterval = setInterval(() => {
+                    timeLeft--;
+                    
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    
+                    paymentTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        paymentModal.style.display = 'none';
+                        
+                        // Simulate key generation after payment
+                        generateKey();
+                    }
+                }, 1000);
+                
+                // Store interval to clear if modal is closed
+                paymentModal.timerInterval = timerInterval;
+            }
+        });
+        
+        // Close p
